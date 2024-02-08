@@ -18,20 +18,15 @@ use Illuminate\Support\Facades\File;
 */
 
 Route::get('/', function () {
-
-
-// dd($posts);
     return view('posts',[
         'posts' => Post::all()
     ]);
 });
 
 Route::get('/posts/{post}',function($slug){
-
-
+    $post=Post::findOrFail($slug);
     return view('post', [
-        'post' => Post::find($slug)
+        'post' =>$post
     ]);
-
-})->where('posts','[A-Z]+');
+});
 
