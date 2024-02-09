@@ -2,58 +2,19 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
 
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\File;
-use Spatie\YamlFrontMatter\YamlFrontMatter;
-
-class Post
+class Post extends Model
 {
-    public $title;
+    use HasFactory;
 
-    public $expert;
+    protected $guarded=[];
 
-    public $date;
-
-    public $body;
-
-    public $slug;
-
-    public function __construct($title,$expert,$date,$body,$slug)
+    public function category()
     {
-        $this->title = $title;
-        $this->expert = $expert;
-        $this->date = $date;
-        $this->body = $body;
-        $this->slug = $slug;
+        return $this->belongsTo(Category::class);
     }
-    public static function all()
-    {
-        return cache()->rememberForever('posts.all', function () {
-            return collect(File::files(resource_path("posts")))
-            ->map(fn($file)=>YamlFrontMatter::parseFile($file))
-            ->map(fn($doucment)=> new Post($doucment->title,
-                $doucment->expert,
-                $doucment->date,
-                $doucment->body(),
-                $doucment->slug
-            ))->sortByDesc('date');
-        });
-    }
-    public static function find($slug)
-    {
-        return static::all()->firstWhere('slug',$slug);
 
-    }
-    public static function findOrFail($slug)
-    {
-        $posts=static::find($slug);
 
-        if(! $posts){
-            throw new ModelNotFoundException();
-        }
-
-        return $posts;
-
-    }
 }
