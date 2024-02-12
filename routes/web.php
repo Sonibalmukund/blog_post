@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\File;
 Route::get('/', function () {
 
     return view('posts',[
-        'posts' => Post::with('category')->get()
+        'posts' => Post::latest()->get()
     ]);
 });
 
@@ -33,5 +33,11 @@ Route::get('/posts/{post:slug}',function(Post $post){
 Route::get('/categories/{category:slug}',function (\App\Models\Category $category){
     return view('posts',[
         'posts' => $category->posts
+    ]);
+});
+
+Route::get('/authors/{author:user_name}',function (\App\Models\User $author){
+    return view('posts',[
+        'posts' => $author->posts
     ]);
 });
