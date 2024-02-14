@@ -23,8 +23,8 @@ class PostFactory extends Factory
             'category_id'=>Category::factory(),
             'slug'=>$this->faker->slug,
             'title'=>$this->faker->sentence,
-            'expert'=>$this->faker->sentence,
-            'body'=>$this->faker->paragraph
+            'expert'=>'<p>'.implode('</p><p>',$this->faker->paragraphs(2)).'</p>',
+            'body'=>'<p>'.implode('</p><p>',$this->faker->paragraphs(6)).'</p>'
         ];
     }
 }
