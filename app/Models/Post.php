@@ -14,7 +14,26 @@ class Post extends Model
     protected $with=['category','author'];
 
 
+    public function scopeFilter($query ,array $filtters)
+    {
+        $query->when($filtters['search'] ?? false,fn($query, $search)=>
+        $query->where(fn($query)=>
+        $query->where('title','like','%'. $search.'%')
+                ->orwhere('body','like','%'. $search.'%')
+        ));
 
+        $query->when($filtters['category'] ?? false,fn($query, $category)=>
+        $query->whereHas('category',fn($query)=>
+        $query->where('slug',$category)
+        )
+        );
+
+        $query->when($filtters['author'] ?? false,fn($query, $author)=>
+        $query->whereHas('author',fn($query)=>
+        $query->where('username',$author)
+        )
+        );
+    }
     public function category(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
         return $this->belongsTo(Category::class);
