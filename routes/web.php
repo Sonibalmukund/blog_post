@@ -20,6 +20,7 @@ use Illuminate\Support\Facades\File;
 Route::get('/', [\App\Http\Controllers\PostController::class,'index'])->name('home');
 
 Route::get('/posts/{post:slug}',[\App\Http\Controllers\PostController::class,'show']);
+Route::post('posts/{post:slug}/comments',[\App\Http\Controllers\PostCommentController::class,'store']);
 
 Route::get('register',[\App\Http\Controllers\RegisterController::class,'create'])->middleware('guest');
 Route::post('register',[\App\Http\Controllers\RegisterController::class,'store'])->middleware('guest');
