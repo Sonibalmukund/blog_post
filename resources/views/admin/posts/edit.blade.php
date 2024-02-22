@@ -1,3 +1,4 @@
+
 <x-layout>
     <x-setting :heading="'Edit Post:'.$post->title">
         <form method="POST" action="/admin/posts/{{ $post->id }}" enctype="multipart/form-data">
@@ -12,7 +13,7 @@
                     <img src="{{asset('storage/'.$post->thumbnail)}}" alt="" class="rounded-xl ml-6" width="100">
             </div>
             <x-form.textarea name="expert">{{old('expert',$post->expert)}}</x-form.textarea>
-            <x-form.textarea name="body">{{old('body',$post->body)}}</x-form.textarea>
+            <x-form.textarea name="body" >{{ old('body', $post->body) }}</x-form.textarea>
             <x-form.field>
                 <x-form.lable name="category"/>
                 <select name="category_id" id="category_id" >
@@ -26,6 +27,20 @@
                     @endforeach
                 </select>
                 <x-form.error name="category"/>
+            </x-form.field>
+            <x-form.field>
+                <x-form.lable name="Author"/>
+                <select name="user_id" id="user_id" >
+                    @php
+                        $users=\App\Models\User::all();
+                    @endphp
+                    @foreach($users as $user)
+                        <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>
+                            {{ ucwords($user->name) }}
+                        </option>
+                    @endforeach
+                </select>
+                <x-form.error name="user_id"/>
             </x-form.field>
             <x-button>Update</x-button>
         </form>

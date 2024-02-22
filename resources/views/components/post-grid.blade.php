@@ -1,4 +1,6 @@
 @props(['post'])
+
+
 <x-post-fetured-card :post="$post[0]"/>
 @if($post->count() > 1)
     <div class="lg:grid lg:grid-cols-6">

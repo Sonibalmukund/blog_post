@@ -1,11 +1,12 @@
 <x-layout>
+
     <x-setting heading="Publish New Post">
         <form action="/admin/posts" method="post" enctype="multipart/form-data">
             @csrf
             <x-form.input name="title"/>
             <x-form.input name="slug"/>
             <x-form.input name="thumbnail" type="file"/>
-            <x-form.textarea name="expert"/>
+            <x-form.textarea name="expert" :isTextEditor="true"/>
             <x-form.textarea name="body"/>
             <x-form.field>
                 <x-form.lable name="category"/>
@@ -21,6 +22,7 @@
                 </select>
                 <x-form.error name="category"/>
             </x-form.field>
+
             <x-button>Publish</x-button>
         </form>
 

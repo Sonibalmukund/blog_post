@@ -16,13 +16,15 @@ class PostController extends Controller
     {
         return view('posts.index', [
             'posts' => Post::latest()->filter(
-                request(['search','category','author']))->
+                request(['search','category','author']))->where('status',1)->
                 paginate(6)->withQueryString()
         ]);
     }
 
     public  function show(Post $post)
     {
+      abort_if($post->status==0,404);
+
         return view('posts.show', [
             'post' => $post,
         ]);

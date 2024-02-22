@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
 
@@ -22,17 +23,16 @@ class AdminPostController extends Controller
 
     public function store()
     {
-        $post=new Post();
         $attributes = \request()->validate([
             'title' => 'required',
             'body' => 'required',
-            'thumbnail' => $post->exists ? ['image'] : ['required','image'],
+            'thumbnail' => 'required|image',
             'slug' => 'required|unique:posts,slug',
             'expert' => 'required',
             'category_id' => 'required|exists:categories,id',
-            'published_at'=>'required',
+            'published_at' => now(),
+            'status'=>'nullable'
         ]);
-
         $attributes['user_id'] = auth()->id();
 
         $thumbnail = \request()->file('thumbnail');
@@ -41,7 +41,7 @@ class AdminPostController extends Controller
 
         Post::create($attributes);
 
-        return redirect('/');
+        return redirect('/')->with('success', 'Post Inserted!');
     }
 
     public function edit(Post $post)
@@ -58,7 +58,8 @@ class AdminPostController extends Controller
             'slug' => 'required',
             'expert' => 'required',
             'category_id' => 'required|exists:categories,id',
-            'published_at'=>'required',
+            'updated_at'=>now(),
+            'user_id'=>'required|exists:users,id'
 
         ]);
         if(isset($attributes['thumbnail'])){
@@ -66,9 +67,12 @@ class AdminPostController extends Controller
         $thumbnailPath = $thumbnail->storeAs('public/thumbnails', $thumbnail->getClientOriginalName());
         $attributes['thumbnail'] = str_replace('public/', '', $thumbnailPath);
         }
-        //        dd($attributes);
+
+        $categories=Category::all();
+//                dd($attributes);
         $post->update($attributes);
-        return back()->with('success','Post Updated!');
+        return back()->with('success', 'Post Updated!');
+
     }
 
     public function delete(Post $post)
@@ -77,5 +81,13 @@ class AdminPostController extends Controller
 
         return back()->with('success','Post Deleted!');
 
+    }
+    public function status(Request $request, $status, $id)
+    {
+        $post = Post::find($id);
+        $post->status = $status;
+        $post->save();
+
+        return redirect()->back()->with('success', 'Post Status Updated');
     }
 }

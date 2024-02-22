@@ -51,5 +51,6 @@ Route::middleware('can:admin')->group(function (){
     Route::get('admin/posts/{post}/edit',[AdminPostController::class,'edit']);
     Route::patch('admin/posts/{post}',[AdminPostController::class,'update']);
     Route::delete('admin/posts/{post}',[AdminPostController::class,'delete']);
+    Route::get('admin/posts/status/{status}/{id}', [AdminPostController::class, 'status']);
 });
 

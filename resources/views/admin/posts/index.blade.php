@@ -17,7 +17,16 @@
                                             </div>
                                         </div>
                                     </td>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+{{--                                        <span class="border border-gray-200 p-2 w-full text-sm rounded-xl" style="font-family:Bodoni MT Poster Compressed; color: blue">Active</span>--}}
 
+                                        @if ($post->status == 1)
+                                            <a href="{{ url('admin/posts/status/0', $post->id) }}" class="border border-gray-200 p-2 w-full text-sm rounded-xl" style="font-family:Bodoni MT Poster Compressed; color: blue">Published</a>
+                                        @elseif ($post->status == 0)
+                                            <a href="{{ url('admin/posts/status/1', $post->id) }}" class="border border-gray-200 p-2 w-full text-sm rounded-xl" style="font-family:Bodoni MT Poster Compressed; color: red">Draft</a>
+                                        @endif
+
+                                    </td>
                                     <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                         <a href="/admin/posts/{{ $post->id }}/edit" class="text-blue-500 hover:text-blue-600">Edit</a>
                                     </td>
