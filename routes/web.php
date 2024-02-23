@@ -14,6 +14,7 @@ use Spatie\YamlFrontMatter\YamlFrontMatter;
 use Illuminate\Support\Facades\File;
 
 
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes

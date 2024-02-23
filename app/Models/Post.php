@@ -47,5 +47,9 @@ class Post extends Model
     {
         return $this->belongsTo(User::class,'user_id');
     }
-
+    public function incrementReadCount()
+    {
+        $this->view_count++;
+        $this->save();
+    }
 }
