@@ -27,22 +27,36 @@
 
         <div class="mt-8 md:mt-0 flex items-center">
             @auth
+                    <img src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="" class="rounded-xl mr-1" width="100">
+
+            @endauth
+
+        @auth
                 <x-dropdown>
                     <x-slot name="trigger">
                         <button class="text-xs font-bold uppercase">Welcome,{{auth()->user()->name}}!</button>
-
                     </x-slot>
                     @can('admin')
-                        <x-dorpodown-iteam href="/admin/posts" :active="request()->is('/admin/posts')">Dashboard</x-dorpodown-iteam>
-                        <x-dorpodown-iteam href="admin/posts/create" :active="request()->is('admin/posts/create')">New Post</x-dorpodown-iteam>
-                    @endcan
-                        <x-dorpodown-iteam href="#" x-data="{}" @click.prevent="document.querySelector('#logout-form').submit()" >Log Out</x-dorpodown-iteam>
+                    <x-dorpodown-iteam href="{{ route('admin.posts') }}" :active="request()->is('admin/posts*')">
+                            Dashboard
+                        </x-dorpodown-iteam>
 
+                        <x-dorpodown-iteam href="{{ route('admin.posts.create') }}" :active="request()->routeIs('admin.posts.create')">
+                            New Post
+                        </x-dorpodown-iteam>
+                    @endcan
+
+                    <x-dorpodown-iteam href="{{ route('admin.user.edit', ['user' => auth()->user()->id]) }}" :active="request()->routeIs('admin.user.edit')">
+                        Profile
+                    </x-dorpodown-iteam>
+
+                    <x-dorpodown-iteam href="#" x-data="{}" @click.prevent="document.querySelector('#logout-form').submit()">
+                        Log Out
+                    </x-dorpodown-iteam>
                     <form id="logout-form" action="/logout" method="Post" class="hidden">
                         @csrf
                     </form>
                 </x-dropdown>
-
 
             @else
                 <a href="/register" class="text-xs font-bold uppercase">Register</a>

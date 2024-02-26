@@ -75,7 +75,7 @@ class AdminPostController extends Controller
 
     }
 
-    public function delete(Post $post)
+    public function destroy (Post $post)
     {
         $post->delete();
 

@@ -14,7 +14,10 @@ return new class extends Migration
         Schema::create('bookmarks', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained(); // Assuming you have a users table
-            $table->foreignId('post_id')->constrained();
+            $table->foreign('post_id')
+                ->references('id')
+                ->on('posts')
+                ->onDelete('cascade');
             $table->timestamps();
         });
     }

@@ -43,33 +43,32 @@
 
                         </div>
                     </div>
-                    <div>
+
+                    <div style="display: flex; align-items: center;">
                         <i class="fas fa-eye"></i>
-                        <span id="viewCount">
-                            {{$post->view_count}}
-                        </span>
-                    </div>
-                    <div>
+                        <span id="viewCount" style="margin-right: 10px;">
+        {{$post->view_count}}
+    </span>
+
                         @auth
                             @if(auth()->user()->bookmarks->contains($post))
                                 <form method="post" action="{{ route('bookmark', $post) }}">
                                     @csrf
                                     <button type="submit">
-                                        <i class="fa fa-bookmark" ></i>
-                                        <span>Bookmarked</span>
+                                        <i class="fa fa-bookmark text-blue-500"></i>
                                     </button>
                                 </form>
                             @else
                                 <form method="post" action="{{ route('bookmark', $post) }}">
                                     @csrf
                                     <button type="submit">
-                                        <i class="fa fa-bookmark-o" style="font-size: 36px;"></i>
-                                        <span>Bookmark</span>
+                                        <i class="fa fa-bookmark text-black-500"></i>
                                     </button>
                                 </form>
                             @endif
                         @endauth
                     </div>
+
                     <h1 class="font-bold text-3xl lg:text-4xl mb-10">
                       {{$post->title}}
                     </h1>

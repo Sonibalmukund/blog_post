@@ -39,9 +39,16 @@ class PostController extends Controller
     }
     public function bookmark(Post $post)
     {
-        auth()->user()->bookmarks()->toggle($post);
+        $user = auth()->user();
 
-        return back();
+        $user->bookmarks()->toggle($post);
+
+        $isBookmarked = $user->bookmarks->contains($post);
+
+        $message = $isBookmarked ? 'Bookmark Successfully!' : 'Bookmark Remove!';
+
+        return back()->with('success', $message);
     }
+
 
 }
