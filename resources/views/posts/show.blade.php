@@ -1,6 +1,5 @@
 <x-layout>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css">
-
     <main class="max-w-6xl mx-auto mt-10 lg:mt-20 space-y-6">
         <article class="max-w-4xl mx-auto lg:grid lg:grid-cols-12 gap-x-10">
                 <div class="col-span-4 lg:text-center lg:pt-14 mb-10">
@@ -19,6 +18,7 @@
                             </h5>
                         </div>
                     </div>
+                    <x-button>Follow</x-button>
                 </div>
 
                 <div class="col-span-8">
@@ -49,6 +49,27 @@
                             {{$post->view_count}}
                         </span>
                     </div>
+                    <div>
+                        @auth
+                            @if(auth()->user()->bookmarks->contains($post))
+                                <form method="post" action="{{ route('bookmark', $post) }}">
+                                    @csrf
+                                    <button type="submit">
+                                        <i class="fa fa-bookmark" ></i>
+                                        <span>Bookmarked</span>
+                                    </button>
+                                </form>
+                            @else
+                                <form method="post" action="{{ route('bookmark', $post) }}">
+                                    @csrf
+                                    <button type="submit">
+                                        <i class="fa fa-bookmark-o" style="font-size: 36px;"></i>
+                                        <span>Bookmark</span>
+                                    </button>
+                                </form>
+                            @endif
+                        @endauth
+                    </div>
                     <h1 class="font-bold text-3xl lg:text-4xl mb-10">
                       {{$post->title}}
                     </h1>
@@ -61,7 +82,6 @@
                   @foreach($post->comments as $comment)
                         <x-post-comment :comment="$comment"/>
                   @endforeach
-
                 </section>
         </article>
     </main>

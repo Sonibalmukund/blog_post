@@ -37,6 +37,8 @@ Route::post('posts/{post:slug}/comments',[PostCommentController::class,'store'])
 
 Route::post('newsletter', NewsletterController::class);
 
+//bookmark
+Route::post('/posts/{post}/bookmark', [PostController::class, 'bookmark'])->middleware('auth')->name('bookmark');
 
 Route::get('register',[RegisterController::class,'create'])->middleware('guest');
 Route::post('register',[RegisterController::class,'store'])->middleware('guest');

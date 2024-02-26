@@ -7,6 +7,7 @@ use App\Models\Category;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Validation\Rule;
+use App\Models\Bookmark;
 use \Symfony\Component\HttpFoundation\Response;
 use Illuminate\Http\Request;
 
@@ -36,6 +37,11 @@ class PostController extends Controller
             'post' => $post,
         ]);
     }
+    public function bookmark(Post $post)
+    {
+        auth()->user()->bookmarks()->toggle($post);
 
+        return back();
+    }
 
 }
