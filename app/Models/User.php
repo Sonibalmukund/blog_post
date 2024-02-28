@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Bookmark;
 
 class User extends Authenticatable
 {
@@ -43,9 +44,35 @@ class User extends Authenticatable
     {
         return $this->hasMany(Post::class);
     }
-
     public function bookmarks()
     {
         return $this->belongsToMany(Post::class, 'bookmarks')->withTimestamps();
+    }
+    public function isFollowing(?User $user)
+    {
+        return $user && $this->following()->where('following_id', $user->id)->exists();
+    }
+
+    public function follow(?User $user)
+    {
+        if ($user && !$this->isFollowing($user)) {
+            $this->following()->attach($user->id);
+        }
+    }
+
+
+    public function unfollow(User $user)
+    {
+        $this->following()->detach($user->id);
+    }
+
+    public function following()
+    {
+        return $this->belongsToMany(User::class, 'follows', 'follower_id', 'following_id')->withTimestamps();
+    }
+
+    public function followers()
+    {
+        return $this->belongsToMany(User::class, 'follows', 'following_id', 'follower_id')->withTimestamps();
     }
 }

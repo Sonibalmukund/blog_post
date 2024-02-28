@@ -18,9 +18,24 @@
                             </h5>
                         </div>
                     </div>
-                    <x-button>Follow</x-button>
-                </div>
+                    <div>
+                        @auth
+                            @if (auth()->user()->isFollowing($post->author))
+                                <form action="{{ route('post.follow', $post) }}" method="POST">
+                                    @csrf
+                                    <x-button>UnFollow</x-button>
+                                </form>
+                            @else
+                                <form action="{{ route('post.unfollow', $post) }}" method="POST">
+                                    @csrf
+                                    @method('DELETE')
+                                    <x-button>Follow</x-button>
+                                </form>
+                            @endif
+                        @endauth
 
+                    </div>
+                </div>
                 <div class="col-span-8">
                     <div class="hidden lg:flex justify-between mb-6">
                         <a href="/"
@@ -43,25 +58,24 @@
 
                         </div>
                     </div>
+                    <div>
 
+                    </div>
                     <div style="display: flex; align-items: center;">
-                        <i class="fas fa-eye"></i>
-                        <span id="viewCount" style="margin-right: 10px;">
-        {{$post->view_count}}
-    </span>
-
+                        <i class="fas fa-eye" style="margin-right: 5px;"></i>
+                        <span id="viewCount">{{$post->view_count}}</span>
                         @auth
                             @if(auth()->user()->bookmarks->contains($post))
                                 <form method="post" action="{{ route('bookmark', $post) }}">
                                     @csrf
-                                    <button type="submit">
+                                    <button type="submit" style="margin-left: 10px;">
                                         <i class="fa fa-bookmark text-blue-500"></i>
                                     </button>
                                 </form>
                             @else
                                 <form method="post" action="{{ route('bookmark', $post) }}">
                                     @csrf
-                                    <button type="submit">
+                                    <button type="submit" style="margin-left: 10px;">
                                         <i class="fa fa-bookmark text-black-500"></i>
                                     </button>
                                 </form>

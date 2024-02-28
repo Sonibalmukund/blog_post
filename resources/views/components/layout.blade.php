@@ -25,9 +25,9 @@
             </a>
         </div>
 
-        <div class="mt-8 md:mt-0 flex items-center">
+            <div class="mt-8 md:mt-0 flex items-center">
             @auth
-                    <img src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="" class="rounded-xl mr-1" width="100">
+                    <img src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="avatar" height="60" width="60" class="rounded-xl">
 
             @endauth
 
