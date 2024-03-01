@@ -17,28 +17,33 @@
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-{{--                                        <span class="border border-gray-200 p-2 w-full text-sm rounded-xl" style="font-family:Bodoni MT Poster Compressed; color: blue">Active</span>--}}
 
-                                        @if ($post->status == 1)
-                                            <a href="{{ url('admin/posts/status/0', $post->id) }}" class="border border-gray-200 p-2 w-full text-sm rounded-xl" style="font-family:Bodoni MT Poster Compressed; color: blue">Published</a>
-                                        @elseif ($post->status == 0)
-                                            <a href="{{ url('admin/posts/status/1', $post->id) }}" class="border border-gray-200 p-2 w-full text-sm rounded-xl" style="font-family:Bodoni MT Poster Compressed; color: red">Draft</a>
+                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                        @if (auth()->user()->can('admin') || $post->status == 1)
+                                            <a href="{{ url('admin/posts/status/' . ($post->status == 1 ? 0 : 1), $post->id) }}" class="border border-gray-200 p-2 w-full text-sm rounded-xl" style="font-family:Bodoni MT Poster Compressed; color: {{ $post->status == 1 ? 'blue' : 'red' }}">
+                                                {{ $post->status == 1 ? 'Published' : 'Draft' }}
+                                            </a>
+                                        @else
+                                            <span class="border border-gray-200 p-2 w-full text-sm rounded-xl" style="font-family:Bodoni MT Poster Compressed; color: {{ $post->status == 1 ? 'blue' : 'red' }}">
+                                                {{ $post->status == 1 ? 'Published' : 'Draft' }}
+                                            </span>
                                         @endif
-
-                                    </td>
-                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <a href="/admin/posts/{{ $post->id }}/edit" class="text-blue-500 hover:text-blue-600">Edit</a>
                                     </td>
 
-                                    <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                                        <form method="POST" action="/admin/posts/{{ $post->id }}">
-                                            @csrf
-                                            @method('DELETE')
+                                    @can('admin')
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <a href="/admin/posts/{{ $post->id }}/edit" class="text-blue-500 hover:text-blue-600">Edit</a>
+                                        </td>
 
-                                            <button class="text-xs text-gray-400">Delete</button>
-                                        </form>
-                                    </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                            <form method="POST" action="/admin/posts/{{ $post->id }}">
+                                                @csrf
+                                                @method('DELETE')
+
+                                                <button class="text-xs text-gray-400">Delete</button>
+                                            </form>
+                                        </td>
+                                    @endcan
                                 </tr>
                             @endforeach
                             </tbody>

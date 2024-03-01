@@ -1,6 +1,6 @@
 <!doctype html>
 
-<title>Laravel From Scratch Blog</title>
+<title>Blog Post</title>
 <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.gstatic.com">
 <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600;700&display=swap" rel="stylesheet">
@@ -36,7 +36,6 @@
                     <x-slot name="trigger">
                         <button class="text-xs font-bold uppercase">Welcome,{{auth()->user()->name}}!</button>
                     </x-slot>
-                    @can('admin')
                     <x-dorpodown-iteam href="{{ route('admin.posts') }}" :active="request()->is('admin/posts*')">
                             Dashboard
                         </x-dorpodown-iteam>
@@ -44,7 +43,6 @@
                         <x-dorpodown-iteam href="{{ route('admin.posts.create') }}" :active="request()->routeIs('admin.posts.create')">
                             New Post
                         </x-dorpodown-iteam>
-                    @endcan
 
                     <x-dorpodown-iteam href="{{ route('admin.user.edit', ['user' => auth()->user()->id]) }}" :active="request()->routeIs('admin.user.edit')">
                         Profile

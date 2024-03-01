@@ -17,6 +17,7 @@ class PostController extends Controller
     //
     public function index()
     {
+
         return view('posts.index', [
             'posts' => Post::latest()->filter(
                 request(['search','category','author']))->where('status',1)->
@@ -45,9 +46,13 @@ class PostController extends Controller
 
         $user->bookmarks()->toggle($post);
 
-        $isBookmarked = $user->bookmarks->contains($post);
+        if (!empty($user->bookmarks)) $isBookmarked = $user->bookmarks->contains($post);
 
-        $message = $isBookmarked ? 'Bookmark Successfully!' : 'Bookmark Remove!';
+        if ($isBookmarked) {
+            $message = 'Bookmark Successfully!';
+        } else {
+            $message = 'Bookmark Remove!';
+        }
 
         return back()->with('success', $message);
     }

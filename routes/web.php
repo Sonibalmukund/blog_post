@@ -1,6 +1,5 @@
 <?php
 
-use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AdminPostController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\PostCommentController;
@@ -40,6 +39,9 @@ Route::post('newsletter', NewsletterController::class);
 
 //bookmark
 Route::post('/posts/{post}/bookmark', [PostController::class, 'bookmark'])->middleware('auth')->name('bookmark');
+//Route::get('posts/bookmark',[AdminPostController::class,'index']);
+Route::get('admin/posts/bookmark',[AdminPostController::class,'bookmark'])->name('admin.posts.bookmark');
+
 
 Route::post('/post/{post}/follow', [PostController::class, 'follow'])->name('post.follow');
 Route::delete('/post/{post}/unfollow', [PostController::class, 'unfollow'])->name('post.unfollow');
@@ -56,13 +58,14 @@ Route::get('login',[SessionController::class,'create'])->middleware('guest');
 Route::post('login',[SessionController::class,'store'])->middleware('guest');
 Route::post('logout',[SessionController::class,'destroy'])->middleware('auth');
 
-Route::middleware('can:admin')->group(function (){
+Route::middleware(['auth'])->group(function (){
     Route::resource('admin/posts', AdminPostController::class)->names([
         'create' => 'admin.posts.create',
         'index'=>'admin.posts'
     ]);
     Route::get('admin/posts/status/{status}/{id}', [AdminPostController::class, 'status']);
 });
+
 
 //    Route::get('admin/posts',[AdminPostController::class,'index'])->name('admin.posts');
 //    Route::get('admin/posts/create',[AdminPostController::class,'create'])->name('admin.posts.create');

@@ -2,19 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Bookmark;
 use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class AdminPostController extends Controller
 {
        //
     public function index()
     {
-        return view('admin.posts.index',[
-            'posts'=>Post::paginate(50)
-        ]);
 
+
+        $query = Post::orderBy('id', 'DESC')->with('author');
+
+        if(!Auth::user()->can('admin')){
+            $query = $query->where('user_id', Auth::user()->id);
+        }
+
+        return view('admin.posts.index', [
+            'posts' => $query->paginate(50)
+        ]);
     }
     public function create()
     {
@@ -89,5 +98,13 @@ class AdminPostController extends Controller
         $post->save();
 
         return redirect()->back()->with('success', 'Post Status Updated');
+    }
+
+    public function bookmark()
+    {
+        $user = auth()->user();
+        $Bookmark = $user->bookmarks()->orderBy('id', 'DESC')->with('author')->get();
+//        dd($latestBookmark);
+        return view('admin.posts.bookmark',compact('Bookmark'));
     }
 }

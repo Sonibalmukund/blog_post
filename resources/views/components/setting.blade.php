@@ -7,7 +7,6 @@
         <aside class="w-48">
             <h4 class="font-semibold mb-4">Links</h4>
             <ul>
-                @can('admin')
                 <li>
                 <a href="{{route('admin.posts')}}" class="{{request()->is('admin/posts') ? 'text-blue-500' :''}}">All Posts</a>
                 </li>
@@ -15,10 +14,13 @@
                     <a href="{{ route('admin.posts.create') }}"
                        class="{{ request()->is('admin/posts/create*') ? 'text-blue-500' : '' }}">New Post</a>
                 </li>
-                @endcan
                 <li>
                     <a href="{{ route('admin.user.edit', ['user' => auth()->user()->id]) }}"
                        class="{{ request()->routeIs('admin.user.edit') ? 'text-blue-500' : '' }}">Profile</a>
+                </li>
+                <li>
+                    <a href="{{route('admin.posts.bookmark')}}"
+                       class="{{ request()->routeIs('admin.posts.bookmark') ? 'text-blue-500' : '' }}">Bookmark</a>
                 </li>
             </ul>
         </aside>
