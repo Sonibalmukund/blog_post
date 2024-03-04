@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminPostController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\NewsletterController;
 use App\Http\Controllers\PostCommentController;
 use App\Http\Controllers\PostController;
@@ -54,11 +55,20 @@ Route::get('admin/user/{user}/edit', [RegisterController::class, 'edit'])->name(
 Route::patch('admin/user/{user}',[RegisterController::class,'update']);
 
 //login
-Route::get('login',[SessionController::class,'create'])->middleware('guest');
-Route::post('login',[SessionController::class,'store'])->middleware('guest');
-Route::post('logout',[SessionController::class,'destroy'])->middleware('auth');
+Route::get('login', [SessionController::class, 'create'])->middleware('guest')->name('login');
+Route::post('login', [SessionController::class, 'store'])->middleware('guest');
+Route::post('logout', [SessionController::class, 'destroy'])->middleware('auth')->name('logout');
 
 Route::middleware(['auth'])->group(function (){
+    Route::resource('admin/category',CategoryController::class)->names([
+        'index'=>'admin.category.index',
+        'create'=>'admin.category.create'
+    ]);
+    Route::get('admin/category/status/{status}/{id}', [CategoryController::class, 'status']);
+
+
+
+
     Route::resource('admin/posts', AdminPostController::class)->names([
         'create' => 'admin.posts.create',
         'index'=>'admin.posts'

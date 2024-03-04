@@ -7,6 +7,8 @@ use App\Models\Category;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\Policies\PostPolicy;
+use Illuminate\Auth\Access\AuthorizationException;
 
 class AdminPostController extends Controller
 {
@@ -55,6 +57,8 @@ class AdminPostController extends Controller
 
     public function edit(Post $post)
     {
+        $this->authorize('update', $post);
+
         return view('admin.posts.edit',['post'=>$post]);
     }
 

@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use Illuminate\Auth\Access\Gate;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -15,9 +16,10 @@ class MustBeAdministrator
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (auth()->user()?->user_name !== 'admin') {
+        if (!Gate::allows('is-admin')) {
             return response()->view('errors.403_custom', [], Response::HTTP_FORBIDDEN);
         }
+
         return $next($request);
     }
 }

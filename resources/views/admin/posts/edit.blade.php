@@ -21,9 +21,11 @@
                         $categories=\App\Models\Category::all();
                     @endphp
                     @foreach($categories as $category)
-                        <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
-                            {{ ucwords($category->name) }}
-                        </option>
+                        @if($category->status==1)
+                            <option value="{{ $category->id }}" {{ old('category_id') == $category->id ? 'selected' : '' }}>
+                                {{ ucwords($category->name) }}
+                            </option>
+                        @endif
                     @endforeach
                 </select>
                 <x-form.error name="category"/>

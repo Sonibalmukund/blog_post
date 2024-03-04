@@ -26,44 +26,39 @@
         </div>
 
             <div class="mt-8 md:mt-0 flex items-center">
-            @auth
-                    <img src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="avatar" height="60" width="60" class="rounded-xl">
+                @auth
+                        <img src="{{ asset('storage/' . auth()->user()->avatar) }}" alt="avatar" height="60" width="60" class="rounded-xl">
 
-            @endauth
+                @endauth
+                @auth
+                    <x-dropdown>
+                        <x-slot name="trigger">
+                            <button class="text-xs font-bold uppercase">Welcome,{{auth()->user()->name}}!</button>
+                        </x-slot>
+                        <x-dorpodown-iteam href="{{ route('admin.posts') }}" :active="request()->is('admin/posts*')">
+                                Dashboard
+                            </x-dorpodown-iteam>
 
-        @auth
-                <x-dropdown>
-                    <x-slot name="trigger">
-                        <button class="text-xs font-bold uppercase">Welcome,{{auth()->user()->name}}!</button>
-                    </x-slot>
-                    <x-dorpodown-iteam href="{{ route('admin.posts') }}" :active="request()->is('admin/posts*')">
-                            Dashboard
+
+                        <x-dorpodown-iteam href="{{ route('admin.user.edit', ['user' => auth()->user()->id]) }}" :active="request()->routeIs('admin.user.edit')">
+                            Profile
                         </x-dorpodown-iteam>
 
-                        <x-dorpodown-iteam href="{{ route('admin.posts.create') }}" :active="request()->routeIs('admin.posts.create')">
-                            New Post
+                        <x-dorpodown-iteam href="#" x-data="{}" @click.prevent="document.querySelector('#logout-form').submit()">
+                            Log Out
                         </x-dorpodown-iteam>
-
-                    <x-dorpodown-iteam href="{{ route('admin.user.edit', ['user' => auth()->user()->id]) }}" :active="request()->routeIs('admin.user.edit')">
-                        Profile
-                    </x-dorpodown-iteam>
-
-                    <x-dorpodown-iteam href="#" x-data="{}" @click.prevent="document.querySelector('#logout-form').submit()">
-                        Log Out
-                    </x-dorpodown-iteam>
-                    <form id="logout-form" action="/logout" method="Post" class="hidden">
-                        @csrf
-                    </form>
-                </x-dropdown>
-
-            @else
-                <a href="/register" class="text-xs font-bold uppercase">Register</a>
-                <a href="/login" class="ml-6 text-xs font-bold uppercase">Log in</a>
-            @endauth
-            <a href="#newsletter" class="bg-blue-500 ml-3 rounded-full text-xs font-semibold text-white uppercase py-3 px-5">
-                Subscribe for Updates
-            </a>
-        </div>
+                        <form id="logout-form" action="/logout" method="Post" class="hidden">
+                            @csrf
+                        </form>
+                    </x-dropdown>
+                @else
+                    <a href="/register" class="text-xs font-bold uppercase">Register</a>
+                    <a href="/login" class="ml-6 text-xs font-bold uppercase">Log in</a>
+                @endauth
+                <a href="#newsletter" class="bg-blue-500 ml-3 rounded-full text-xs font-semibold text-white uppercase py-3 px-5">
+                    Subscribe for Updates
+                </a>
+            </div>
     </nav>
 
     {{$slot}}

@@ -40,6 +40,10 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    public function isAdmin()
+    {
+        return $this->user_name === 'balu';
+    }
     public function posts()
     {
         return $this->hasMany(Post::class);
